@@ -1,0 +1,55 @@
+<nav xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+     xmlns:th="http://www.thymeleaf.org">
+  <div class="container">
+    <ul>
+      <li><strong><a href="/">Управление компаниями</a></strong></li>
+    </ul>
+    <ul>
+      <li><a href="/">Главная</a></li>
+
+      <!-- Видно только ADMIN -->
+      <li sec:authorize="hasRole('ADMIN')">
+        <a href="/users/all">Список пользователей</a>
+      </li>
+      <li sec:authorize="hasRole('ADMIN')">
+        <a href="/users/new">Все добавить нового пользователя</a>
+      </li>
+      <li sec:authorize="hasRole('ADMIN')">
+        <a href="/tasks/all">Список всех задач</a>
+      </li>
+      //"/users/*/userDelete"
+      //"/tasks/*/deleteTask"
+
+
+      <!-- Видно только авторизованным -->
+      <li sec:authorize="isAuthenticated()">
+        <a href="/users/profile" role="button">
+          <span sec:authentication="name"></span>
+        </a>
+      </li>
+
+      <li sec:authorize="isAuthenticated()">
+        <form th:action="@{/users/logout}" th:method="post" style="display: inline;">
+          <button type="submit" class="secondary">Выйти</button>
+        </form>
+      </li>
+
+      <!-- Видно только НЕ авторизованным -->
+      <li sec:authorize="!isAuthenticated()">
+        <a href="/" role="button">Регистрация</a>
+      </li>
+      <li sec:authorize="!isAuthenticated()">
+        <a href="/home" role="button">Вход</a>
+      </li>
+      <li sec:authorize="!isAuthenticated()">
+        <a href="/register" role="button">Вход</a>
+      </li>
+      <li sec:authorize="!isAuthenticated()">
+        <a href="/login" role="button">Вход</a>
+      </li>
+      <li sec:authorize="!isAuthenticated()">
+        <a href="/login-error" role="button">Вход</a>
+      </li>
+    </ul>
+  </div>
+</nav>

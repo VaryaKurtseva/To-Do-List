@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Список задач</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<h1>Список задач</h1>
+<h3 th:if="${successMessage}" th:text="${successMessage}" style="color : green;"></h3>
+<form method="get" action="/toDoList/tasks/all">
+    <div class="input-group">
+        <input type="search"
+               name="search"
+               placeholder="Поиск по имени"
+               th:value="${search}">
+        <button type="submit" class="btn btn-primary">Искать</button>
+    </div>
+</form>
+<div th:if="${#lists.isEmpty(allTasks)}">
+    <p class="text-muted">Задачи отсусвтуют</p>
+</div>
+<div th:unless="${#lists.isEmpty(allTasks)}">
+    <div th:each="ts : ${allTasks}">
+        <p>
+            <a th:href="@{/tasks/{id}(id=${ts.id})}" th:text="${ts.id}"></a>
+        </p>
+        <p th:text="${ts.nameTask}"></p>
+        <p th:text="${ts.textOfTask}"></p>
+        <p th:text="${ts.deadline}"></p>
+        <p th:text="${ts.additionalInfo}"></p>
+        <p th:text="${ts.status}"></p>
+
+    </div>
+</div>
+
+<nav th:if="${totalPages != null && totalPages > 1}">
+    <ul>
+        <li th:if="${currentPage > 0}">
+            <a th:href="@{/tasks/all(page=${currentPage - 1},size=10)}"> Назад</a>
+        </li>
+        <li th:each="i : ${#numbers.sequence(0,totalPages-1)}">
+            <a th:href="@{/tasks/all(page=${i}, size = 10)}"
+               th:text="${i+1}"
+               th:classappend="${i == currentPage} ? 'active' : ''"></a>
+        </li>
+        <li th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/tasks/all(page=${currentPage + 1}, size=10)}">Вперёд »</a>
+        </li>
+    </ul>
+</nav>
+
+<br>
+<a th:href="@{/users/all}" sec:authorize="hasRole('ADMIN')">К списку всех пользователей</a>
+
+<br>
+<a href="/home">Выйти</a>
+
+
+</body>
+</html>

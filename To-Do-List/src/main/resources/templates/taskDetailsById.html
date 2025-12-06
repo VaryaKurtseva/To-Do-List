@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${task != null ? task.nameTask : 'Задача не найдена'}"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div th:if="${task.user != null}">
+    <h1>Задача данного пользователя:
+        <span th:text="${task.user.username + ' ' + task.user.surname}"></span>
+    </h1>
+</div>
+<div th:unless="${task.user != null}">
+    <h1>Пользователь отсуствует</h1>
+</div>
+<div th:if="${task}">
+    <h1 th:text="${task.nameTask}">Имя задачи</h1>
+    <p><b>Описание задачи: </b><span th:text="${task.textOfTask}"></span></p>
+    <p><b>Дедлайн: </b><span th:text="${task.deadline}"></span></p>
+    <p><b>Дополнительная информация: </b><span th:text="${task.additionalInfo}"></span></p>
+    <p><b>Статус: </b><span th:text="${task.status}"></span></p>
+</div>
+<div th:unless="${task}">
+    <h1>Задачи отсуствуют</h1>
+    <p> Задачи с указанным ID отсуствует</p>
+</div>
+
+
+
+<br>
+<a th:href="@{/tasks/{id}/updateDedlain(id=${task.id})}" >
+    <button type="submit">Обновить дедлайн</button> </a>
+
+<br>
+<a th:href="@{/tasks/{id}/doneTaskId(id=${task.id})}" >
+    <button type="submit">Сделать задачу</button></a>
+
+<br>
+<a th:href="@{/tasks/{id}/setStatus(id=${task.id})}" >
+    <button type="submit">Установить другой статус задачи</button></a>
+<br>
+<a th:href="@{/tasks/{id}/deleteTask(id=${task.id})}"
+   sec:authorize="hasRole('ADMIN')">
+    <button type="submit">Удалить задачу</button></a>
+
+<br>
+<a th:href="@{/users/{id}/userTasks(id=${userId})}">Назад к списку задач пользователя</a>
+
+
+
+
+</body>
+</html>

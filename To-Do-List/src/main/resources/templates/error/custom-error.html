@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ошибки</title>
+</head>
+<body>
+<div>
+  <main class = "text-center">
+    <hgroup>
+      <h1 th:text="${errorCode} + ${errorTitle}">Ошибка</h1>
+      <p th:text="${errorMessage}">Произошла ошибка</p>
+    </hgroup>
+    <a href="/home" role="button">Вернуться на главную</a>
+  </main>
+</div>
+
+
+</body>
+</html>
